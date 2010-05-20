@@ -1,5 +1,10 @@
+all : packetspammer packetvector
+
 packetspammer: packetspammer.c
 	gcc  -Wall -Werror radiotap.c packetspammer.c -o packetspammer -lpcap
+
+packetvector: packetvector.c
+	gcc  -Wall -Werror radiotap.c packetvector.c -o packetvector -lpcap
 
 clean:
 	rm -f packetspammer *~
