@@ -1,0 +1,43 @@
+Packetvector
+Steve deRosier <steve@cozybit.com>
+
+Packetvector is based on Packetspammer by Andy Green <andy@warmcat.com>
+
+Packetvector sends crafted 802.11 packets through mac80211.  Unlike packetvector,
+it doesn't listen, it only transmits.
+
+The packets aren't fully correct, they simply have properly set 802.11 headers.
+For example, a beacon vector doesn't have proper information elements, just the
+data "Vectorspammer".  This should be corrected in the future but for now it was
+expediant and fulfuilled the testing requirement.  
+
+Packetvector is used as follows:
+packetvector [-v #] mon0 
+
+Packetvector must be called with the interface to transmit on.  It is designed 
+to transmit on a monitor interface.  
+
+An optional vector number can be given by the -v flag. If the vector flag isn't 
+specified, packetvector will cycle through all of the defined vectors repeatedly.
+If it is given, Packetvector will spam the specified vector over and over as 
+fast as possible.
+
+Currently the following vectors are defined:
+0	Data
+1	Null
+2	Beacon
+3	Probe Response
+4	Probe Request
+
+Transmitted vectors can be viewed using Wireshark or another sniffer.  In 
+Wireshark, the appropriate headers can be views, but it will mark the Beacon,
+Probe Response and Probe Request packets as invalid as their data payloads
+aren't properly formed.  Data and Null are correct however.
+
+Typical usage:
+iw dev wlan0 interface add mon0 type monitor
+iwconfig wlan0 channel 6
+iwconfig mon0 channel 6
+ifconfig mon0 up
+./packetvector mon0
+
